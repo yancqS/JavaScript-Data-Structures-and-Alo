@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>queue</title>
+</head>
+<body>
+<script>
+
+    function Queue() {
+        let items = [];
+
+        //enqueue(ele):向队列尾部添加一个(或多个)新的项
+        this.enqueue = function (elements) {
+            items.push(elements);
+        };
+
+        //dequeue():移除队列的第一(即排在队列最前面的)项，并返回被移出的元素
+        this.dequeue = function () {
+            return items.shift();
+        };
+
+        //front():返回队列中第一个元素，最先被添加，也将是最先被移除的元素，队列不做任何变动
+        this.front = function () {
+            return items[0];
+        };
+
+        //isEmpty():如果队列中不包括任何元素，返回true，否则返回false
+        this.isEmpty = function () {
+            return items.length === 0;
+        };
+        //size():返回队列包含的元素的个数
+        this.size = function () {
+            return items.length;
+        };
+
+        //print 输出队列元素
+        this.print = function () {
+            console.log(items.toString());
+        }
+    }
+
+    /*let queue = new Queue();
+    console.log(queue.isEmpty());
+    queue.enqueue("Jhon");
+    queue.enqueue("Jack");
+    queue.enqueue("Camila");
+    queue.print();
+    console.log(queue.size());
+    console.log(queue.isEmpty());
+    queue.dequeue();
+    queue.print();
+    queue.dequeue();
+    queue.print();*/
+
+    //优先队列(最小优先队列:因为优先级的值较小的元素被放置在队列的最前面)
+    function PriorityQueue() {
+        let items = [];
+
+        function QueueElemrnt(element, prority) {
+            this.element = element;
+            this.prority = prority;
+        }
+
+        //关键
+        this.enqueue = function (element, prority) {
+            let queueElement = new QueueElemrnt(element, prority);
+            if (this.isEmpty()) {
+                items.push(queueElement);
+            } else {
+                let added = false;
+                for (let i = 0; i < items.length; i++) {
+                    if (queueElement.prority < items[i].prority) {
+                        items.splice(i, 0, queueElement);
+                        added = true;
+                        break;
+                    }
+                }
+                if (!added) {
+                    items.push(queueElement);
+                }
+            }
+        };
+        //dequeue():移除队列的第一(即排在队列最前面的)项，并返回被移出的元素
+        this.dequeue = function () {
+            return items.shift();
+        };
+
+        //front():返回队列中第一个元素，最先被添加，也将是最先被移除的元素，队列不做任何变动
+        this.front = function () {
+            return items[0];
+        };
+
+        //isEmpty():如果队列中不包括任何元素，返回true，否则返回false
+        this.isEmpty = function () {
+            return items.length === 0;
+        };
+        //size():返回队列包含的元素的个数
+        this.size = function () {
+            return items.length;
+        };
+
+        //print 输出队列元素
+        this.print = function () {
+            console.log(items);
+        }
+    }
+
+    /*let priorityQueue = new PriorityQueue();
+    console.log(priorityQueue.isEmpty());
+    priorityQueue.enqueue("Jhon",2);
+    priorityQueue.enqueue("Jack",1);
+    priorityQueue.enqueue("Cmila",1);
+    priorityQueue.print();*/
+
+
+    /*
+    * 循环队列--击鼓传花
+    * @parama {Array} nameLists
+    * @parama {number} num
+    * @return {item}
+    * */
+    function hotPotato(nameLists, num) {
+        let queue = new Queue();
+
+        for (let i = 0; i < nameLists.length; i++) {
+            queue.enqueue(nameLists[i]);
+        }
+
+        while (queue.size() > 1) {
+            for (let i = 0; i < num; i++) {
+                queue.enqueue(queue.dequeue());
+            }
+            let eliminated = queue.dequeue();
+            console.log(eliminated + "在击鼓传花中被淘汰");
+        }
+        return queue.dequeue();
+    }
+
+    let names = ["Jhon", "Jack", "Camila", "Ingrid", "Carl"];
+    let winner = hotPotato(names, 100);
+    console.log("胜利者:" + winner);
+
+</script>
+</body>
+</html>

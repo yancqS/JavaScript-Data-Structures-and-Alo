@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>comPrice</title>
+</head>
+<body>
+<script>
+    /*股神问题*/
+    /*function getMoney(n) {
+        let inc = true;
+        let day = 1;
+        let money = 1;
+        let incday = 1;//涨多少天
+        while (true) {
+            if (day === n) break;
+
+            if (inc) {
+                for (let i = 0; i < incday; i++) {
+                    money++;
+                    day++;
+                    if (day === n) break;
+                }
+            } else {
+                money--;
+                day++;
+                incday++;
+            }
+
+            if (day === n) break;
+
+            inc = !inc;
+        }
+
+        return money;
+    }
+
+    console.log(getMoney(15));*/
+
+    /*函数柯里化*/
+    /*
+    function curry(func) {
+        let l = func.length;
+        return function curried() {
+            let args = [].slice.call(arguments);
+            if (args.length < l) {
+                return function () {
+                    let argsInner = [].slice.call(arguments);
+                    return curried.apply(this, args.concat(argsInner))
+                }
+            } else {
+                return func.apply(this, args)
+            }
+        }
+    }
+
+    let f = function (a, b, c) {
+        return console.log([a, b, c])
+    };
+    let curried = curry(f);
+    curried(1)(2)(3)
+    */
+
+    /*数组扁平化*/
+    /* Array.prototype.flatten = function () {
+         let resArr = [];
+         this.forEach(function (item) {
+             Object.prototype.toString.call(item) === '[object Array]' ?
+                 resArr = resArr.concat(item.flatten()) : resArr.push(item);
+         });
+         return resArr;
+     };
+
+     let arr = [1,[[2,3],4,null,5],6,7,[undefined,8,9],null];
+     console.log(arr.flatten());*/
+
+    /*参加竞赛*/
+    /* let strlength = parseInt(read_line());
+    let str = read_line().split(" ");
+    let arr = str.slice(0);
+
+    function ee(arr) {
+        let alo = arr[0];
+        let pro = arr[1];
+        let team = 0;
+        if (alo < pro) {
+            while (alo > 0 && pro > 0) {
+                alo--;
+                pro = pro - 2;
+                team++;
+            }
+            alo = arr[0];
+            while (alo > 0 && pro > 0) {
+                alo = alo - 2 >= 0 ? alo - 2 : 0;
+                if (alo >= 0) team++;
+            }
+        } else {
+            while (alo > 0 && pro > 0) {
+                pro--;
+                alo = alo - 2;
+                team++;
+            }
+            pro = arr[1];
+            while (alo > 0 && pro > 0) {
+                pro = pro - 2 >= 0 ? pro - 2 : 0;
+                if (pro >= 0) team++;
+            }
+        }
+        return team;
+    }
+
+    console.log(ee([4, 6]));*/
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HashCollisionLinearProbing</title>
+</head>
+<body>
+<script>
+    function HashP() {
+
+        let table = [];
+
+        let ValuePair = function (key, value) {
+            this.key = key;
+            this.value = value;
+            this.toString = function () {
+                return '[' + this.key + '-' + this.value + ']'
+            }
+        };
+
+        //散列函数
+        let loseloseHashCode = function (key) {
+            let hash = 0;
+            for (let i = 0; i < key.length; i++) {
+                hash += key.charCodeAt(i);
+            }
+            return hash % 37;
+        };
+
+        let hashCode = function (key) {
+            return loseloseHashCode(key);
+        };
+
+        this.put = function (key, value) {
+            let position = hashCode(key);
+            if (table[position] === undefined) {
+                table[position] = new ValuePair(key, value);
+            } else {
+                let index = ++position;
+                while (table[index] !== undefined) index++;
+                table[index] = new ValuePair(key, value);
+            }
+        };
+
+        this.get = function (key) {
+            let position = hashCode(key);
+            if (table[position] !== undefined) {
+                if (table[position].key === key) {
+                    return table[position].value;
+                } else {
+                    let index = ++position;
+                    while (table[index] !== undefined && (table[index] && table[index].key !== key)) {
+                        index++;
+                    }
+                    if ((table[index] && table[index].key === key)) {
+                        return table[index].value;
+                    }
+                }
+            } else {
+                return undefined;
+            }
+        };
+
+        this.remove = function (key) {
+            let position = hashCode(key);
+            if(table[position] !== undefined){
+                if(table[position].key === key){
+                    table[position] = undefined;
+                    return true;
+                }else {
+                    let index = ++position;
+                    while (table[index] !== undefined &&(table[index]&&table[index].key !== key)){
+                        index++;
+                    }
+                    if((table[index]&&table[index].key === key)){
+                        table[index] = undefined;
+                        return true;
+                    }
+                }
+            }else {
+                return false;
+            }
+        };
+
+        this.print = function () {
+            for (let i = 0; i < table.length; ++i) {
+                if (table[i] !== undefined) {
+                    console.log(i+'----'+table[i].toString());
+                }
+            }
+        };
+    }
+
+    let hashp = new HashP();
+    hashp.put('Gandalf', 'gandalf@email.com');
+    hashp.put('John', 'johnsnow@email.com');
+    hashp.put('Tyrion', 'tyrion@email.com');
+    hashp.put('Aaron', 'aaron@email.com');
+    hashp.put('Donnie', 'donnie@email.com');
+    hashp.put('Ana', 'ana@email.com');
+    hashp.print();
+    console.log("*********************");
+    console.log(hashp.get("Aaron"));
+    console.log("*********************");
+    hashp.remove("Tyrion");
+    hashp.print();
+    console.log("*********************");
+    console.log(hashp.get("Aaron"));//There is a Bug...
+
+</script>
+</body>
+</html>

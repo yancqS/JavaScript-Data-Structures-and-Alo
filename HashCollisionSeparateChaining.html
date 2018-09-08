@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HashTabke</title>
+</head>
+<body>
+<script>
+    function LinkedList() {
+
+        let Nodes = function (element) {
+            this.element = element;
+            this.next = null;
+        };
+
+        let head = null;
+        let length = 0;
+
+        this.append = function (element) {
+            let node = new Nodes(element),
+                current;
+            if (head === null) {
+                head = node;
+            } else {
+                current = head;
+                while (current.next) {
+                    current = current.next;
+                }
+                current.next = node;
+
+            }
+            length++;
+        };
+        this.removeAt = function (position) {
+            if (position > -1 && position < length) {
+                let current = head,
+                    provious,
+                    index = 0;
+                if (position === 0) {
+                    head = current.next;
+                } else {
+                    while (index++ < position) {
+                        provious = current;
+                        current = current.next;
+                    }
+                    provious.next = current.next;
+                }
+                length--;
+                return current.element;
+            } else {
+                return null;
+            }
+        };
+        this.indexOf = function (element) {
+            let current = head,
+                index = 0;
+            while (current) {
+                if (current.element === element) {
+                    return index;
+                }
+                current = current.next;
+                index++;
+            }
+            return -1;
+        };
+        this.remove = function (element) {
+            let position = this.indexOf(element);
+            return this.removeAt(position);
+        };
+        this.getHead = function () {
+            return head;
+        };
+        this.isEmpty = function () {
+            return length === 0;
+        };
+        this.toString = function () {
+            let current = head,
+                string = "";
+            while (current) {
+                string += "," + current.element;
+                current = current.next;
+            }
+            return string.slice(1);
+        };
+    }
+
+    /*
+    * 分离链接法 解决 冲突(不同的值在散列表中对应相同位置时，我们称其为 **冲突** )
+    * */
+    function HashTable() {
+        let table = [];
+
+        let ValuePair = function (key, value) {
+            this.key = key;
+            this.value = value;
+            this.toString = function () {
+                return '[' + this.key + '-' + this.value + ']';
+            }
+        };
+        //散列函数(hash函数)
+        let loseloseHashCode = function (key) {
+            key = key.toString();
+            let hash = 0;
+            for (let i = 0; i < key.length; i++) {
+                hash += key.charCodeAt(i);
+            }
+            return hash % 37;
+        };
+
+        //put(key,value) 向散列表中添加一个新的项
+        this.put = function (key, value) {
+            let position = loseloseHashCode(key);
+            if (table[position] === undefined) {
+                table[position] = new LinkedList();
+            }
+            table[position].append(new ValuePair(key, value));
+        };
+
+        //remove(key) 根据键值从散列表中移除值
+        this.remove = function (key) {
+            let position = loseloseHashCode(key);
+            if (table[position] !== undefined) {
+                let current = table[position].getHead();
+                while (current.next) {
+                    if (current.element.key === key) {
+                        table[position].remove(current.element);
+                        if (table[position].isEmpty()) {
+                            table[position] = undefined;
+                        }
+                        return true;
+                    }
+                    current = current.next;
+                }
+                //检查是否为第一个(只有一个元素的情况)或者最后一个元素
+                if (current.element.key === key) {
+                    table[position].remove(current.element);
+                    if (table[position].isEmpty()) {
+                        table[position] = undefined;
+                    }
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        //get(key) 返回根据键值检索到的特定的值
+        this.get = function (key) {
+            let position = loseloseHashCode(key);
+            if (table[position] !== undefined) {
+                let current = table[position].getHead();
+                while (current.next) {
+                    if (current.element.key === key) {
+                        return current.element.value;
+                    }
+                    current = current.next;
+                }
+                //检查是否为第一个(只有一个元素的情况)或者最后一个元素
+                if (current.element.key === key) {
+                    return current.element.value;
+                }
+            }
+            return undefined;
+        };
+
+        this.print = function () {
+            for (let i = 0; i < table.length; ++i) {
+                if (table[i] !== undefined) {
+                    console.log(table[i].toString());
+                    console.log(table[i].getHead());
+                }
+            }
+        };
+    }
+
+    let hashC = new HashTable();
+    hashC.put("Donnie", "Donnie@qq.com");
+    hashC.put("Ana", "Ana@qq.com");
+    hashC.print();
+    hashC.remove("Ana");
+    hashC.print();
+
+</script>
+</body>
+</html>

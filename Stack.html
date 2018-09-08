@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>stack</title>
+</head>
+<body>
+<script>
+    /*
+    * 栈(stack):后进先出【push、pop】
+    * */
+    function Stack() {
+        let items = [];
+        //push(element)添加一个或几个新元素到栈顶(入栈)
+        this.push = function (element) {
+            items.push(element);
+        };
+
+        //pop()移除栈顶元素，同时返回被移除的元素(出栈)
+        this.pop = function () {
+            return items.pop();
+        };
+
+        //peek()返回栈顶元素，不对栈做任何修改(这个方法不会移除栈顶的元素，仅仅返回它)
+        this.peek = function () {
+            return items[items.length - 1];
+        };
+
+        //isEmpty()如果栈里没有任何元素就返回true，否则返回false
+        this.isEmpty = function () {
+            return items.length === 0;
+        };
+
+        //clear移除栈里的所有元素
+        this.clear = function () {
+            items = [];
+        };
+
+        //size返回栈里元素的个数
+        this.size = function () {
+            return items.length;
+        };
+
+        //print把栈里的元素输出到控制台
+        this.print = function () {
+            console.log(items.toString());
+        }
+    }
+
+    /*let stack = new Stack();
+    console.log(stack.isEmpty());
+    stack.push(5);
+    stack.push(8);
+    console.log(stack.peek());
+    stack.push(11);
+    console.log(stack.size());
+    console.log(stack.isEmpty());
+    stack.push(15);
+    stack.pop();
+    stack.pop();
+    console.log(stack.size());
+    stack.print();*/
+
+
+    /*
+    * @param {number} num
+    * @param {number} base
+    * @return {String}
+    * */
+    function baseConvert(num, base = 2) {
+        let remStack = new Stack(),
+            rem,
+            baseString = "",
+            digits = "0123456789ABCDEF";
+        while (num > 0) {
+            rem = Math.floor(num % base);
+            remStack.push(rem);
+            num = Math.floor(num / base);
+        }
+        while (!remStack.isEmpty()) {
+            baseString += digits[remStack.pop()];
+        }
+        return baseString;
+    }
+
+    console.log(baseConvert(233, 16));
+</script>
+</body>
+</html>

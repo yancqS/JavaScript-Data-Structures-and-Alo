@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sort</title>
+</head>
+<body>
+<script>
+    let arr = [6, 65, 3, 1, 98, 87, 42, 24];
+    console.log(arr);
+
+    function swap(arr, i, j) {
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+
+    //冒泡算法排序
+    /*function sortBubble(arr) {
+        for(let i = 0; i<arr.length;i++){
+            for(let j = 0;j<arr.length-1-i;j++){
+                if(arr[j]>arr[j+1]){
+                    swap(arr,j,j+1);
+                }
+            }
+        }
+    }
+    sortBubble(arr);
+    console.log(arr);*/
+
+    //鸡尾酒排序(对冒泡排序的改进算法)
+    /*function CocktailSort(arr) {
+        let left = 0;
+        let right = arr.length-1;
+        while (left < right){
+            for(let i = left; i < right;i++){
+                if(arr[i]>arr[i+1]){
+                    swap(arr,i,i+1);
+                }
+            }
+            right--;
+            for(let j = right;j>left;j--){
+                if(arr[j] < arr[j-1]){
+                    swap(arr,j,j-1);
+                }
+            }
+            left++;
+        }
+    }
+    CocktailSort(arr);
+    console.log(arr);*/
+
+    //选择排序
+    /*function selectSort(arr) {
+        let min;
+        for(let i = 0; i < arr.length-1;i++){
+            min = i;
+            for(let j = i+1;j<arr.length;j++){
+                if(arr[j] < arr[min]){
+                    min = j;
+                }
+            }
+            if(min !== i){
+                swap(arr,i,min);
+            }
+        }
+    }
+    selectSort(arr);
+    console.log(arr);*/
+
+    //插入法排序
+    /*function insertSort(arr) {
+        for (let i = 1; i < arr.length; i++) {
+            let get = arr[i];
+            let j = i - 1;
+            while (j >= 0 && arr[j] > get) {
+                arr[j + 1] = arr[j];//比较之后的动作第一步一定是先移动排好序的数字，然后才是放要插入的get
+                j--;
+            }
+            arr[j + 1] = get;//放要插入的get
+        }
+    }
+    insertSort(arr);
+    console.log(arr);*/
+
+    //二分插入排序
+    /*function InsertionSortDichotomy(arr) {
+        for (let i = 1; i < arr.length; i++) {
+            let get = arr[i];
+            let left = 0;
+            let right = i - 1;
+            //二分法
+            while (left <= right) {
+                let mid = parseInt((left + right) / 2);
+                if (arr[mid] > get) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            }
+            //console.log(left);
+            //插入排序
+            for (let j = i - 1; j >= left; j--) {
+                arr[j + 1] = arr[j];
+            }
+            arr[left] = get;
+        }
+    }
+
+    InsertionSortDichotomy(arr);
+    console.log(arr);*/
+
+    //希尔排序(也叫递减增量排序，是插入排序的一种更高效的改进版本)
+    /*function shellSort(arr) {
+        let h = 0;
+        while (h <= arr.length) {
+            h = h * 3 + 1;//初始化增量(这个增量其实是没有固定的一个算法的)
+        }
+        while (h >= 1) {
+            for (let i = h; i < arr.length; i = i + h) {
+                let j = i - h;
+                let get = arr[i];
+                //console.log(get);
+                while (j >= 0 && arr[j] > get) {
+                    arr[j + h] = arr[j];
+                    j = j - h;
+                }
+                arr[j + h] = get;
+            }
+            h = (h - 1) / 3;
+        }
+    }
+    shellSort(arr);
+    console.log(arr);*/
+
+    //归并排序(递归版本)
+    /*function mergeSort(arr) {
+        // 设置终止的条件，
+        if (arr.length < 2) {
+            return arr;
+        }
+        //设立中间值
+        let middle = parseInt(arr.length / 2);
+        //第1个和middle个之间为左子列
+        let left = arr.slice(0, middle);
+        //第middle+1到最后为右子列
+        let right = arr.slice(middle);
+        if (left === "undefined" && right === "undefined") {
+            return false;
+        }
+        return merge(mergeSort(left), mergeSort(right));
+    }
+
+    function merge(left, right) {
+        let result = [];
+        while (left.length && right.length) {
+            if (left[0] <= right[0]) {
+                //把left的左子树推出一个，然后push进result数组里
+                result.push(left.shift());
+            } else {
+                //把right的右子树推出一个，然后push进result数组里
+                result.push(right.shift());
+            }
+        }
+        //经过上面一次循环，只能左子列或右子列一个不为空，或者都为空,把剩下的元素都放入新数组的后面
+        while (left.length) {
+            result.push(left.shift());
+        }
+        while (right.length) {
+            result.push(right.shift());
+        }
+        return result;
+    }
+
+    console.log(mergeSort(arr));*/
+
+    //堆排序
+
+    //快速排序
+    /*let quicksort = function(arr) {
+        if(arr.length <= 1) return arr;
+
+        let pivot = Math.floor((arr.length -1)/2);
+        let val = arr[pivot], less = [], more = [];
+
+        arr.splice(pivot, 1);
+        arr.forEach((e)=>{
+            e < val ? less.push(e) : more.push(e);
+        });
+
+        return (quicksort(less)).concat([val],quicksort(more));
+    };
+
+    console.log(quicksort(arr));*/
+</script>
+</body>
+</html>

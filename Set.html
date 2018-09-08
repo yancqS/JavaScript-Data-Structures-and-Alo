@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Set</title>
+</head>
+<body>
+<script>
+    function Sets() {
+        let item = {};
+
+        //add(value) 向集合添加一个新的项
+        this.add = function (value) {
+            if (!this.has(value)) {
+                item[value] = value;
+                return true;
+            }
+            return false;
+        };
+
+        //remove(value) 从集合移除一个值
+        this.remove = function (value) {
+            if (this.has(value)) {
+                delete item[value];
+                return true;
+            }
+            return false;
+        };
+
+
+        //has(value) 如果值在集合中，返回true,否则返回false
+        this.has = function (value) {
+            return item.hasOwnProperty(value);
+        };
+
+        //clear() 移除集合中所有的项
+        this.clear = function () {
+            item = {};
+        };
+
+
+        //size() 返回集合中包含所有元素的数量。与数组的length属性类似
+        this.size = function () {
+            return Object.keys(item).length;
+        };
+
+
+        //values() 返回一个包含集合中所有值的数组
+        this.values = function () {
+            return Object.values(item);
+        };
+
+        //Set类的union方法(两个集合的并集)
+        this.union = function (otherSet) {
+
+            let unionSet = new Sets();
+
+            let values = this.values();
+            for (let i = 0; i < values.length; i++) {
+                unionSet.add(values[i]);
+            }
+
+            let otherValue = otherSet.values();
+            for (let i = 0; i < otherValue.length; i++) {
+                unionSet.add(otherValue[i]);
+            }
+
+            return unionSet;
+        };
+
+        //两个集合的交集
+        this.intersection = function (otherSet) {
+            let intersectionSet = new Sets();
+            let value = this.values();
+            for (let i = 0; i < value.length; i++) {
+                if (otherSet.has(value[i])) {
+                    intersectionSet.add(value[i]);
+                }
+            }
+            return intersectionSet;
+        };
+
+        //两个集合的差集
+        this.difference = function (otherSet) {
+            let diffSet = new Sets();
+            let value = this.values();
+            for (let i = 0; i < value.length; i++) {
+                if (!otherSet.has(value[i])) {
+                    diffSet.add(value[i]);
+                }
+            }
+            return diffSet;
+        };
+
+        //子集
+        this.isSubsetOf = function (otherSet) {
+            if (this.size() > otherSet.size()) {//子集元素的个数需要小于或等于要比较的集合
+                return false;
+            } else {
+                let value = this.values();
+                for (let i = 0; i < value.length; i++) {
+                    if(!otherSet.has(value[i])){
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+    }
+
+    /*let set = new Sets();
+    set.add(1);
+    set.add(2);
+    console.log(set.has(2));
+    console.log(set.size());
+    console.log(set.values());
+    set.remove(2);
+    console.log(set.has(2));
+    console.log(set.size());
+    console.log(set.values());*/
+
+    let setA = new Sets();
+    setA.add(1);
+    setA.add(2);
+    setA.add(3);
+
+    let setB = new Sets();
+    setB.add(3);
+    setB.add(4);
+    setB.add(5);
+
+    let setC = new Sets();
+    setC.add(3);
+    setC.add(4);
+    setC.add(5);
+    setC.add(6);
+
+    let unionAB = setA.union(setB);
+    let intersectionaAB = setA.intersection(setB);
+    let diffAB = setA.difference(setB);
+    let diffBA = setB.difference(setA);
+    console.log(unionAB.values());
+    console.log(intersectionaAB.values());
+    console.log(diffAB.values());
+    console.log(diffBA.values());
+    console.log(setA.isSubsetOf(setC));
+    console.log(setB.isSubsetOf(setC));
+</script>
+</body>
+</html>
