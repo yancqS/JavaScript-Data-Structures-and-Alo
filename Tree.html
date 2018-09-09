@@ -6,6 +6,125 @@
 </head>
 <body>
 <script>
+    /*
+    * 二叉搜索树: 二叉搜索树(BST)是二叉树的一种，但是它只允许你在左侧节点存储（比父节点）小的值
+    * 在右侧节点存储（比父节点）大的（或者等于）的值。
+    * */
+    function BinarySearchTree() {
+        let Nodes = function (key) {
+            this.key = key;
+            this.left = null;
+            this.right = null;
+        };
+        let root = null;
+
+        //私有辅助函数
+        let inserNode = function (node, newNode) {
+            if (newNode.key < node.key) {
+                if (node.left === null) {
+                    node.left = newNode;
+                } else {
+                    inserNode(node.left, newNode);
+                }
+            } else {
+                if (node.right === null) {
+                    node.right = newNode;
+                } else {
+                    inserNode(node.right, newNode);
+                }
+            }
+        };
+
+        //insert(key) 向树中插入一个新的键
+        this.insert = function (key) {
+            let node = new Nodes(key);
+            if (root === null) {
+                root = node;
+            } else {
+                inserNode(root, node);
+            }
+        };
+
+        //search(key) 在树中查找一个键，如果节点存在，则返回true，否则返回false
+
+
+        //inOrderTraverse 通过中序遍历方式遍历所有节点(LDR)
+        let inorederTraverseNode = function (node, callback) {
+            if (node !== null) {
+                inorederTraverseNode(node.left, callback);
+                callback(node.key);
+                inorederTraverseNode(node.right, callback);
+            }
+        };
+
+        this.inOrderTraverse = function (callback) {
+            inorederTraverseNode(root, callback);
+        };
+
+        //preOrderTravrse 通过先序遍历方式遍历所有节点(DLR)
+        let preorederTraverseNode = function (node, callback) {
+            if (node !== null) {
+                callback(node.key);
+                preorederTraverseNode(node.left, callback);
+                preorederTraverseNode(node.right, callback);
+            }
+        };
+
+        this.preOrderTraverse = function (callback) {
+            preorederTraverseNode(root, callback);
+        };
+
+        //postOrderTravrse 通过后序遍历方式遍历所有节点(LRD)
+        let postorederTraverseNode = function (node, callback) {
+            if (node !== null) {
+                postorederTraverseNode(node.left, callback);
+                postorederTraverseNode(node.right, callback);
+                callback(node.key);
+            }
+        };
+
+        this.postOrderTraverse = function (callback) {
+            postorederTraverseNode(root, callback);
+        }
+
+        //min 返回树中最小值/键
+
+        //max 返回树中最大值/键
+
+        //remove(key)从树中移除某个键/键
+    }
+
+    let printNode = function (value) {
+        console.log(value);
+    };
+
+    let tree = new BinarySearchTree();
+    tree.insert(11);
+    tree.insert(7);
+    tree.insert(15);
+    tree.insert(5);
+    tree.insert(3);
+    tree.insert(9);
+    tree.insert(8);
+    tree.insert(10);
+    tree.insert(13);
+    tree.insert(12);
+    tree.insert(14);
+    tree.insert(20);
+    tree.insert(18);
+    tree.insert(25);
+    tree.insert(6);
+    //中序遍历
+    console.log("****中序遍历****");
+    tree.inOrderTraverse(printNode);
+
+    //先序遍历
+    console.log("****先序遍历****");
+    tree.preOrderTraverse(printNode);
+
+    //后序遍历
+    console.log("****后序遍历****");
+    tree.postOrderTraverse(printNode);
 
 </script>
 </body>
