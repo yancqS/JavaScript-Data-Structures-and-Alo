@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DynamicPrograming</title>
+</head>
+<body>
+<script>
+    /*
+    * 在给定数组中求出任意不相邻的数的最大和
+    * 如:[4,1,9,1,1] => 输出:14
+    * 就是4 + 9 + 1 = 14.
+    * */
+    let arr = [1, 2, 4, 1, 7, 8, 3, 4, 1, 9, 1, 1];
+
+    //递归版本
+    function rec_opt(arr, i) {
+        if (i === 0) return arr[0];
+        if (i === 1) return Math.max(arr[0], arr[1]);
+        else {
+            let Select = arr[i] + rec_opt(arr, i - 2);
+            let Unselect = rec_opt(arr, i - 1);
+            return Math.max(Select, Unselect);
+        }
+    }
+
+    //非递归版本
+    function dp_opt(arr) {
+        let opt = [];
+        opt[0] = arr[0];
+        opt[1] = Math.max(arr[0], arr[1]);
+        for (let i = 2; i < arr.length; i++) {
+            let Select = arr[i] + opt[i - 2];
+            let Unselect = opt[i - 1];
+            opt[i] = Math.max(Select, Unselect);
+        }
+        return opt[arr.length - 1];
+    }
+
+    console.log(rec_opt(arr, arr.length - 1));
+    console.log(dp_opt(arr));
+</script>
+</body>
+</html>
