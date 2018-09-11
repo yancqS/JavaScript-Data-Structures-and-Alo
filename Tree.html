@@ -11,6 +11,7 @@
     * 在右侧节点存储（比父节点）大的（或者等于）的值。
     * */
     function BinarySearchTree() {
+
         let Nodes = function (key) {
             this.key = key;
             this.left = null;
@@ -46,6 +47,22 @@
         };
 
         //search(key) 在树中查找一个键，如果节点存在，则返回true，否则返回false
+        this.search = function (key) {
+            return searchNode(root, key);
+        };
+
+        let searchNode = function (node, key) {
+            if (node === null) {
+                return false;
+            }
+            if (node.key > key) {
+                return searchNode(node.left, key);
+            } else if (node.key < key) {
+                return searchNode(node.right, key);
+            } else {
+                return true;
+            }
+        };
 
 
         //inOrderTraverse 通过中序遍历方式遍历所有节点(LDR)
@@ -85,13 +102,81 @@
 
         this.postOrderTraverse = function (callback) {
             postorederTraverseNode(root, callback);
-        }
+        };
 
         //min 返回树中最小值/键
+        this.min = function () {
+            return minNode(root);
+        };
+        let minNode = function (node) {
+            if (node) {
+                while (node && node.left !== null) {
+                    node = node.left;
+                }
+                return node.key;
+            }
+            return null;
+        };
 
         //max 返回树中最大值/键
+        this.max = function () {
+            return maxNode(root);
+        };
+        let maxNode = function (node) {
+            if (node) {
+                while (node && node.right !== null) {
+                    node = node.right;
+                }
+                return node.key;
+            }
+            return null;
+        };
 
         //remove(key)从树中移除某个键/键
+        this.remove = function (key) {
+            root = removeNode(root, key);
+        };
+
+        let removeNode = function (node, key) {
+            if (node === null) {
+                return null;
+            }
+            if (node.key < key) {
+                node.right = removeNode(node.right, key);
+                return node;
+            } else if (node.key > key) {
+                node.left = removeNode(node.left, key);
+                return node;
+            } else {
+                if (node.left === null && node.right === null) {
+                    node = null;
+                    return node;
+                }
+
+                if (node.left === null) {
+                    node = node.right;
+                    return node;
+                } else if (node.right === null) {
+                    node = node.left;
+                    return node;
+                }
+
+                let findMinNode = function (node) {
+                    if (node) {
+                        while (node && node.left !== null) {
+                            node = node.left;
+                        }
+                        return node;
+                    }
+                    return null;
+                };
+                let aux = findMinNode(node.right);
+                node.key = aux.key;
+                node.right = removeNode(node.right, aux.key);
+                return node;
+            }
+
+        }
     }
 
     let printNode = function (value) {
@@ -125,6 +210,21 @@
     //后序遍历
     console.log("****后序遍历****");
     tree.postOrderTraverse(printNode);
+
+    console.log(tree.search(1) ? "key 1 found" : "key 1 is not found");
+    console.log(tree.search(8) ? "key 8 found" : "key 8 is not found");
+    console.log(tree.min());
+    console.log(tree.max());
+
+    tree.remove(6);
+    console.log("****移除6的先序遍历****");
+    tree.preOrderTraverse(printNode);
+    tree.remove(5);
+    console.log("****移除6、5的先序遍历****");
+    tree.preOrderTraverse(printNode);
+    tree.remove(15);
+    console.log("****移除6、5、15的先序遍历****");
+    tree.preOrderTraverse(printNode);
 
 </script>
 </body>
