@@ -38,8 +38,7 @@
     console.log(getMoney(15));*/
 
     /*函数柯里化*/
-    /*
-    function curry(func) {
+    /*function curry(func) {
         let l = func.length;
         return function curried() {
             let args = [].slice.call(arguments);
@@ -55,63 +54,141 @@
     }
 
     let f = function (a, b, c) {
-        return console.log([a, b, c])
+         console.log(a+b+c);
     };
     let curried = curry(f);
-    curried(1)(2)(3)
-    */
+    curried(1)(2)(3);*/
 
     /*数组扁平化*/
-    /* Array.prototype.flatten = function () {
-         let resArr = [];
-         this.forEach(function (item) {
-             Object.prototype.toString.call(item) === '[object Array]' ?
-                 resArr = resArr.concat(item.flatten()) : resArr.push(item);
-         });
-         return resArr;
-     };
+    /*Array.prototype.flatten = function () {
+        let resArr = [];
+        this.forEach(function (item) {
+            Object.prototype.toString.call(item) === '[object Array]' ?
+                resArr = resArr.concat(item.flatten()) : resArr.push(item);
+        });
+        return resArr;
+    };
 
-     let arr = [1,[[2,3],4,null,5],6,7,[undefined,8,9],null];
-     console.log(arr.flatten());*/
+    let arr = [1,[[2,3],4,null,5],6,7,[undefined,8,9],null];
+    console.log(arr.flatten());*/
 
-    /*参加竞赛*/
-    /* let strlength = parseInt(read_line());
-    let str = read_line().split(" ");
-    let arr = str.slice(0);
 
-    function ee(arr) {
-        let alo = arr[0];
-        let pro = arr[1];
-        let team = 0;
-        if (alo < pro) {
-            while (alo > 0 && pro > 0) {
-                alo--;
-                pro = pro - 2;
-                team++;
+    /* function EventEmitter() {
+         var eventArr = [];
+         this.on = function (eventName, fn) {
+             eventArr.push({type: eventName, fn: fn, flag: true});
+         };
+         this.remove = function (eventName) {
+             var length = eventArr.length;
+             for(var i = 0;i<length;i++){
+                 if(eventArr[i].type === eventName){
+                     break;
+                 }
+             }
+             eventArr.splice(i,1);
+         };
+         this.emit = function (eventName, ...value) {
+             var length = eventArr.length;
+             for(var i = 0;i<length;i++){
+                 if (eventArr[i].type === eventName){
+                     eventArr[i].fn(value);
+                     if (!eventArr[i].flag) {
+                         this.remove(eventArr[i].type);
+                     }
+                 }
+             }
+         };
+         this.once = function (eventName, fn) {
+             eventArr.push({type: eventName, fn: fn, flag: false});
+         };
+     }*/
+
+    /*function sortStudents(students) {
+        var sort1 = students.sort(function (a, b) {
+            return a.class - b.class;
+        });
+        var sort2 = sort1.sort(function (a, b) {
+            if(a.class === b.class){
+                return b.score - a.score;
             }
-            alo = arr[0];
-            while (alo > 0 && pro > 0) {
-                alo = alo - 2 >= 0 ? alo - 2 : 0;
-                if (alo >= 0) team++;
-            }
-        } else {
-            while (alo > 0 && pro > 0) {
-                pro--;
-                alo = alo - 2;
-                team++;
-            }
-            pro = arr[1];
-            while (alo > 0 && pro > 0) {
-                pro = pro - 2 >= 0 ? pro - 2 : 0;
-                if (pro >= 0) team++;
-            }
-        }
-        return team;
+        });
+        console.log(JSON.stringify(sort2));
     }
 
-    console.log(ee([4, 6]));*/
 
+    var arr = [{"name": "张三", "class": 1, "score": 64},
+        {"name": "李四", "class": 1, "score": 80},
+        {"name":"王五","class":1,"score":80},
+        {"name":"赵六","class":1,"score":94}
+        ];
+    sortStudents(arr);*/
 
+    /* 360
+    let parseQueryString = function (url, key) {
+         let map = {};
+         let query,arr,keys,value;
+         if(url.indexOf("?")){
+             arr = url.split("?")[1];
+         }else{
+             return null
+         }
+         if(arr === ""){
+             return null
+         }else {
+             if(arr.indexOf("&") !== -1){
+                 query = arr.split("&");
+             }else {
+                 query = new Array(arr);
+             }
+         }
+         for(let i = 0;i<query.length;i++){
+             if(query[i].indexOf("=") !== -1){
+                 keys = query[i].split("=")[0];
+                 value = query[i].split("=")[1];
+             }else{
+                 return null;
+             }
+             map[keys] = value;
+         }
+         if(key === undefined || map[key] === undefined){
+             return null;
+         }else{
+             return map[key];
+         }
+     };
+     console.log(parseQueryString('https://www.didichuxing.com/path?key1=a','key1'));*/
+
+    /*mi
+    function fab(n) {
+        let arr = [];
+        arr[0] = 1;
+        arr[1] = 1;
+        if (n >= 2) {
+            for (let i = 2; i < n; i++) {
+                arr[i] = arr[i - 1] + arr[i - 2];
+            }
+        }
+        return arr;
+    }
+
+    function compute(n) {
+        let num = 0,
+            i = 0,
+            count = 0;
+        while (num < n) {
+            num += fab(i)[fab(i).length - 1];
+            i++;
+        }
+        let arr = fab(i - 2);
+        console.log(arr);
+        for (let i = 0; i < arr.length; i++) {
+            count += arr[i];
+        }
+
+        return count;
+    }
+
+    console.log(compute(10));*/
 </script>
 </body>
 </html>
