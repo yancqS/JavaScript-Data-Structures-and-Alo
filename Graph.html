@@ -65,9 +65,80 @@
         }
     }
 
+    function Queue() {
+        let items = [];
+
+        //enqueue(ele):向队列尾部添加一个(或多个)新的项
+        this.enqueue = function (elements) {
+            items.push(elements);
+        };
+
+        //dequeue():移除队列的第一(即排在队列最前面的)项，并返回被移出的元素
+        this.dequeue = function () {
+            return items.shift();
+        };
+
+        //front():返回队列中第一个元素，最先被添加，也将是最先被移除的元素，队列不做任何变动
+        this.front = function () {
+            return items[0];
+        };
+
+        //isEmpty():如果队列中不包括任何元素，返回true，否则返回false
+        this.isEmpty = function () {
+            return items.length === 0;
+        };
+        //size():返回队列包含的元素的个数
+        this.size = function () {
+            return items.length;
+        };
+
+        //print 输出队列元素
+        this.print = function () {
+            console.log(items.toString());
+        }
+    }
+
+    function Stack() {
+        let items = [];
+        //push(element)添加一个或几个新元素到栈顶(入栈)
+        this.push = function (element) {
+            items.push(element);
+        };
+
+        //pop()移除栈顶元素，同时返回被移除的元素(出栈)
+        this.pop = function () {
+            return items.pop();
+        };
+
+        //peek()返回栈顶元素，不对栈做任何修改(这个方法不会移除栈顶的元素，仅仅返回它)
+        this.peek = function () {
+            return items[items.length - 1];
+        };
+
+        //isEmpty()如果栈里没有任何元素就返回true，否则返回false
+        this.isEmpty = function () {
+            return items.length === 0;
+        };
+
+        //clear移除栈里的所有元素
+        this.clear = function () {
+            items = [];
+        };
+
+        //size返回栈里元素的个数
+        this.size = function () {
+            return items.length;
+        };
+
+        //print把栈里的元素输出到控制台
+        this.print = function () {
+            console.log(items.toString());
+        }
+    }
+
     function Graph() {
         let vertice = [];//存储图中所有顶点
-        let adjList = new Dictionary();//字典类: 使用顶点的名字作为Key,邻接顶点列表作为value
+        let adjList = new Dictionary();//字典类(Map): 使用顶点的名字作为Key,邻接顶点列表作为value
 
         //向图中添加新的顶点，接受顶点v作为参数
         this.addVertex = function (v) {
@@ -75,7 +146,7 @@
             adjList.set(v, []);
         };
 
-        //接受两个顶点作为参数(这两个顶点相邻)
+        //接受两个顶点作为参数(这两个顶点相邻)添加路径
         this.addEdge = function (v, w) {
             adjList.get(v).push(w);
             adjList.get(w).push(v);
@@ -92,6 +163,73 @@
                 s += "\n";
             }
             return s;
+        };
+
+        let initializeColor = function () {
+            let color = [];
+            for (let i = 0; i < vertice.length; i++) {
+                color[vertice[i]] = 'white';
+            }
+            return color;
+        };
+
+        this.bfs = function (v, callback) {
+            let color = initializeColor(),
+                queue = new Queue();
+            queue.enqueue(v);
+            while (!queue.isEmpty()) {
+                let u = queue.dequeue(),
+                    neighbors = adjList.get(u);
+                color[u] = 'grey';
+                for (let i = 0; i < neighbors.length; i++) {
+                    let w = neighbors[i];
+                    if (color[w] === 'white') {
+                        color[w] = 'grey';
+                        queue.enqueue(w);
+                    }
+                }
+                color[u] = 'black';
+                if (callback) {
+                    callback(u);
+                }
+            }
+        };
+
+        this.BFS = function (v) {
+            let color = initializeColor(),
+                quenue = new Queue(),
+                distance = [],
+                pred = [];
+
+            quenue.enqueue(v);
+
+            for (let i = 0; i < vertice.length; i++) {
+                distance[vertice[i]] = 0;
+                pred[vertice[i]] = null;
+            }
+
+            while (!quenue.isEmpty()) {
+                let u = quenue.dequeue(),
+                    neighbors = adjList.get(u);
+                color[u] = 'grey';
+
+                for (let i = 0; i < neighbors.length; i++) {
+                    let w = neighbors[i];
+                    if (color[w] === 'white') {
+                        color[w] = 'grey';
+                        distance[w] = distance[u] + 1;
+                        pred[w] = u;
+                        quenue.enqueue(w);
+                    }
+                }
+
+                color[u] = 'black';
+            }
+
+            return {
+                distance: distance,
+                predecessors: pred
+            }
         }
     }
 
@@ -100,6 +238,7 @@
     myVertices.forEach((item) => {
         graph.addVertex(item)
     });
+
     /*
     * vertice=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
     * adjList = {
@@ -115,6 +254,10 @@
     * }
     * */
 
+    function printNode(value) {
+        console.log("Visited vertex: " + value);
+    }
+
     graph.addEdge("A", "B");
     graph.addEdge("A", "C");
     graph.addEdge("A", "D");
@@ -127,6 +270,27 @@
     graph.addEdge("E", "I");
 
     console.log(graph.toString());
+
+    //图的广度遍历(利用 *队列* 数据结构)
+    graph.bfs(myVertices[0], printNode);
+
+
+    //利用前溯点数组(predecessors)求由A到其他点的最短路径
+    let shortestPathA = graph.BFS(myVertices[0]);
+    let fromVertex = myVertices[0];
+    for (let i = 0; i < myVertices.length; i++) {
+        let toVertex = myVertices[i],
+            path = new Stack();
+        for (let v = toVertex; v !== fromVertex; v = shortestPathA.predecessors[v]) {
+            path.push(v);
+        }
+        path.push(fromVertex);
+        let s = path.pop();
+        while (!path.isEmpty()) {
+            s += ' - ' + path.pop();
+        }
+        console.log(s);
+    }
 
 
 </script>
