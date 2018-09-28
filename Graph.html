@@ -146,7 +146,7 @@
             adjList.set(v, []);
         };
 
-        //接受两个顶点作为参数(这两个顶点相邻)添加路径
+        //接受两个顶点作为参数(这两个顶点相邻)添加路径 无向图的邻接表
         this.addEdge = function (v, w) {
             adjList.get(v).push(w);
             adjList.get(w).push(v);
@@ -173,6 +173,7 @@
             return color;
         };
 
+        //广度优先遍历（BFS）
         this.bfs = function (v, callback) {
             let color = initializeColor(),
                 queue = new Queue();
@@ -195,14 +196,16 @@
             }
         };
 
+        //改进版的深度优先遍历（包含路径数组和路径数组）
         this.BFS = function (v) {
             let color = initializeColor(),
                 quenue = new Queue(),
-                distance = [],
-                pred = [];
+                distance = [],//路径数组
+                pred = [];//路径数组
 
             quenue.enqueue(v);
 
+            //初始化数组distance、pred
             for (let i = 0; i < vertice.length; i++) {
                 distance[vertice[i]] = 0;
                 pred[vertice[i]] = null;
@@ -230,7 +233,32 @@
                 distance: distance,
                 predecessors: pred
             }
+        };
+
+        let dfsVisit = function (u, color, callback) {
+            color[u] = 'grey';
+            if (callback) {
+                callback(u);
+            }
+            let neighbors = adjList.get(u);
+            for (let i = 0; i < neighbors.length; i++) {
+                let w = neighbors[i];
+                if (color[w] === 'white') {
+                    dfsVisit(w, color, callback);
+                }
+            }
+            color[u] = 'black';
+        };
+
+        this.dfs = function (callback) {
+            let color = initializeColor();
+            for (let i = 0; i < vertice.length; i++) {
+                if (color[vertice[i]] === 'white') {
+                    dfsVisit(vertice[i], color, callback);
+                }
+            }
         }
+
     }
 
     let graph = new Graph();
@@ -241,6 +269,7 @@
 
     /*
     * vertice=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
+    *
     * adjList = {
     *       "A":[],
     *       "B":[],
@@ -277,8 +306,8 @@
 
     //利用前溯点数组(predecessors)求由A到其他点的最短路径
     let shortestPathA = graph.BFS(myVertices[0]);
-    let fromVertex = myVertices[0];
-    for (let i = 0; i < myVertices.length; i++) {
+    let fromVertex = myVertices[0];//原顶点
+    for (let i = 1; i < myVertices.length; i++) {
         let toVertex = myVertices[i],
             path = new Stack();
         for (let v = toVertex; v !== fromVertex; v = shortestPathA.predecessors[v]) {
@@ -291,6 +320,10 @@
         }
         console.log(s);
     }
+
+    //图的深度优先遍历
+    graph.dfs(printNode);
+
 
 
 </script>
