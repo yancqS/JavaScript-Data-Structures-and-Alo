@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>最长不重复子串</title>
+</head>
+<body>
+<script>
+    /**
+     * @param {string} s
+     * @return {number}
+     */
+    let lengthOfLongestSubstring = function (s) {
+        let res = 0; // 用于存放当前最长无重复子串的长度
+        let str = ""; // 用于存放无重复子串
+        let len = s.length;
+        for (let i = 0; i < len; i++) {
+            let char = s.charAt(i);
+            let index = str.indexOf(char);
+            if (index === -1) {
+                str += char;
+                res = res < str.length ? str.length : res;
+            } else {
+                str = str.substr(index + 1) + char;//如果存在一个重复的字符，则这个字符第一次出现的位置前的字符都舍弃(可以保证)
+            }
+        }
+        return res;
+    };
+
+    console.log(lengthOfLongestSubstring("abdevbac"));
+</script>
+</body>
+</html>
