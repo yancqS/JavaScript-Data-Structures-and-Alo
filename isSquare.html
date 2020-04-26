@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>isSquare</title>
+</head>
+<body>
+<script>
+    /*
+    * 判断任意一个正整数是否为某一个数的平方
+    * 思路: 1+3+5+7+...+(2n-1) = n^2
+    *
+    * 推导: 等差数列求和 （首项+尾项）*项数 / 2
+    * 即: [(1+2n-1)*n] / 2 = n^2
+    *
+    * */
+
+    function isSquare(n) {
+        if (n < 0) return false;
+        for (let i = 1; n > 0; i += 2) {
+            n -= i;
+        }
+        return n === 0;
+    }
+    console.log(isSquare(81));
+    console.log(isSquare(100));
+    console.log(isSquare(35));
+</script>
+</body>
+</html>
